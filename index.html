@@ -66,16 +66,38 @@
         .character-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 20px;
             margin-bottom: 20px;
         }
         
-        @media (min-width: 768px) {
+        @media (max-width: 768px) {
             .character-info {
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-                gap: 20px;
-                margin-bottom: 30px;
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
+        }
+        
+        .info-left {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+        }
+        
+        .info-right {
+            display: flex;
+            align-items: stretch;
         }
         
         .info-box {
@@ -109,13 +131,6 @@
             grid-template-columns: 1fr;
             gap: 15px;
             margin: 20px 0;
-        }
-        
-        @media (min-width: 768px) {
-            .stats {
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-            }
         }
         
         .stat-box {
@@ -517,143 +532,52 @@
             margin: 30px 0;
         }
         
-        .ability-table {
-            width: 100%;
-            border-collapse: collapse;
+        .ability-selection-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             margin: 20px 0;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            font-size: 0.7em;
         }
         
         @media (min-width: 768px) {
-            .ability-table { font-size: 0.85em; }
-        }
-        
-        .ability-table th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 4px;
-            text-align: center;
-            font-weight: bold;
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        @media (min-width: 768px) {
-            .ability-table th { padding: 12px 8px; }
-        }
-        
-        .ability-table th:last-child {
-            border-right: none;
-        }
-        
-        .ability-table td {
-            padding: 6px 4px;
-            border-bottom: 1px solid #eee;
-            border-right: 1px solid #f0f0f0;
-            vertical-align: top;
-        }
-        
-        @media (min-width: 768px) {
-            .ability-table td { padding: 8px; }
-        }
-        
-        .ability-table td:last-child {
-            border-right: none;
-        }
-        
-        .ability-cell {
-            position: relative;
-            padding: 8px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            min-height: 80px;
-        }
-        
-        @media (min-width: 768px) {
-            .ability-cell {
-                padding: 10px;
-                min-height: 100px;
+            .ability-selection-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
             }
         }
         
-        .ability-cell:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        
-        .ability-radio {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        
-        @media (min-width: 768px) {
-            .ability-radio {
-                top: 8px;
-                right: 8px;
-                width: 18px;
-                height: 18px;
-            }
-        }
-        
-        .ability-name {
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 4px;
-            font-size: 0.9em;
-        }
-        
-        @media (min-width: 768px) {
-            .ability-name {
-                margin-bottom: 5px;
-                font-size: 1em;
-            }
-        }
-        
-        .ability-timing {
-            font-size: 0.7em;
-            color: #666;
-            background: #f0f0f0;
-            padding: 2px 4px;
+        .ability-category {
+            background: #f8f9fa;
+            padding: 15px;
             border-radius: 10px;
-            display: inline-block;
-            margin-bottom: 4px;
+            border: 2px solid #ddd;
         }
         
-        @media (min-width: 768px) {
-            .ability-timing {
-                font-size: 0.8em;
-                padding: 2px 6px;
-                border-radius: 12px;
-                margin-bottom: 5px;
-            }
+        .ability-category h3 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-size: 1.1em;
         }
         
-        .ability-desc {
+        .ability-dropdown {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .ability-description {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 0.85em;
+            line-height: 1.4;
             color: #555;
-            line-height: 1.3;
-            font-size: 0.75em;
+            min-height: 60px;
         }
-        
-        @media (min-width: 768px) {
-            .ability-desc {
-                line-height: 1.4;
-                font-size: 0.85em;
-            }
-        }
-        
-        .attack-type { background: #ffebee; border-left: 4px solid #f44336; }
-        .defense-type { background: #e8f5e8; border-left: 4px solid #4caf50; }
-        .support-type { background: #e3f2fd; border-left: 4px solid #2196f3; }
-        .passive-type { background: #f3e5f5; border-left: 4px solid #9c27b0; }
-        .special-type { background: #fff8e1; border-left: 4px solid #ff9800; }
         
         .selected-abilities {
             background: #e8f5e8;
@@ -778,27 +702,42 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌸 서천꽃밭 동자 🐉</h1>
+            <h1>🌸 서천꽃캡터 은하 🐉</h1>
             <p>인터랙티브 캐릭터 시트 (사이코로 픽션 룰)</p>
         </div>
         
         <div class="content">
             <div class="character-info">
-                <div class="info-box">
-                    <label>이름</label>
-                    <input type="text" id="characterName" placeholder="은하">
+                <div class="info-left">
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <label>이름</label>
+                            <input type="text" id="characterName" placeholder="은하">
+                        </div>
+                        <div class="info-box">
+                            <label>나이</label>
+                            <input type="text" id="age" placeholder="겉보기 나이">
+                        </div>
+                        <div class="info-box">
+                            <label>성별</label>
+                            <input type="text" id="gender" placeholder="성별">
+                        </div>
+                        <div class="info-box">
+                            <label>식신</label>
+                            <input type="text" id="shikigami" placeholder="청">
+                        </div>
+                    </div>
                 </div>
-                <div class="info-box">
-                    <label>나이</label>
-                    <input type="text" id="age" placeholder="겉보기 나이">
-                </div>
-                <div class="info-box">
-                    <label>성별</label>
-                    <input type="text" id="gender" placeholder="성별">
-                </div>
-                <div class="info-box">
-                    <label>식신</label>
-                    <input type="text" id="shikigami" placeholder="청">
+                <div class="info-right">
+                    <div class="stat-box">
+                        <h3>📋 규칙 안내</h3>
+                        <p style="font-size: 0.9em; margin: 0; line-height: 1.4;">
+                            • 특기는 총 6개까지 선택 가능, 갭을 포함한 거리에 따라 판정값 결정<br>
+                            • 2D6을 굴려 판정값 이상이면 성공, 판정값이 낮을수록 유리함<br>
+                            • 식신의 힘을 빌리면 +4 보너스를 받지만 영력 1 소모<br>
+                            • 호기심 분야를 선택하면 해당 분야 좌우의 갭이 채워져 거리 단축
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -816,23 +755,6 @@
                         <span>/ 6</span>
                     </div>
                 </div>
-                <div class="stat-box">
-                    <h3>📋 규칙 안내</h3>
-                    <p style="font-size: 0.9em; margin: 0; line-height: 1.4;">
-                        • 특기는 총 6개까지 선택 가능<br>
-                        • 판정값이 낮을수록 유리함<br>
-                        • 2D6을 굴려 판정값 이상이면 성공<br>
-                        • 식신의 힘을 빌리면 +4 보너스, 영력 1 소모
-                    </p>
-                </div>
-            </div>
-
-            <div class="note">
-                <strong>📋 특기 시스템 (사이코로 픽션 룰):</strong><br>
-                • 특기로 선택하면 판정값 5, 갭을 포함한 거리에 따라 6, 7, 8... 순으로 증가<br>
-                • 갭(세로 빈칸)도 1칸으로 계산됨 (대각선 이동 불가)<br>
-                • 호기심 분야를 선택하면 해당 분야 좌우의 갭이 채워져서 거리 단축<br>
-                • 괴이의 오른쪽에는 갭이 없음
             </div>
 
             <h2>특기표 - 총 6개까지 선택 가능</h2>
@@ -1452,231 +1374,90 @@
             <div class="ability-section">
                 <h2>🌟 어빌리티 선택 - 각 분야별 1개씩 총 6개</h2>
                 
-                <table class="ability-table">
-                    <thead>
-                        <tr>
-                            <th>⚡ 사령술</th>
-                            <th>🏃 체육</th>
-                            <th>🗣️ 대인</th>
-                            <th>👁️ 감각</th>
-                            <th>📚 지식</th>
-                            <th>👻 괴이</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 공격 어빌리티 -->
-                        <tr class="attack-type">
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-사령술" value="영혼 채찍" class="ability-radio">
-                                    <div class="ability-name">영혼 채찍</div>
-                                    <div class="ability-timing">공격</div>
-                                    <div class="ability-desc">영적 에너지로 채찍을 만들어 공격한다. 명중 시 1D6+1 피해. 영체에게 추가 1D6 피해.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-체육" value="천상무" class="ability-radio">
-                                    <div class="ability-name">천상무</div>
-                                    <div class="ability-timing">공격</div>
-                                    <div class="ability-desc">서천의 무술로 적을 공격한다. 명중 시 1D6 피해, 펌블 불가.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-대인" value="위압" class="ability-radio">
-                                    <div class="ability-name">위압</div>
-                                    <div class="ability-timing">공격</div>
-                                    <div class="ability-desc">신성한 기운으로 적을 압도한다. 성공 시 대상이 다음 턴 행동 불가.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-감각" value="꽃잎 폭풍" class="ability-radio">
-                                    <div class="ability-name">꽃잎 폭풍</div>
-                                    <div class="ability-timing">공격</div>
-                                    <div class="ability-desc">날카로운 꽃잎을 날린다. 3명까지 동시 공격, 각자 1D6 피해.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-지식" value="정화의 빛" class="ability-radio">
-                                    <div class="ability-name">정화의 빛</div>
-                                    <div class="ability-timing">공격</div>
-                                    <div class="ability-desc">신성한 빛으로 악령을 정화한다. 괴이에게 2D6, 일반에게 1 피해.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-괴이" value="괴이 봉인" class="ability-radio">
-                                    <div class="ability-name">괴이 봉인</div>
-                                    <div class="ability-timing">공격</div>
-                                    <div class="ability-desc">괴이의 힘을 봉인한다. 성공 시 대상의 특수능력 1턴 봉쇄.</div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- 방어 어빌리티 -->
-                        <tr class="defense-type">
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-사령술" value="영적 보호막" class="ability-radio">
-                                    <div class="ability-name">영적 보호막</div>
-                                    <div class="ability-timing">방어</div>
-                                    <div class="ability-desc">영적 방어막을 전개한다. 피해를 1D6만큼 감소시킨다.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-체육" value="신체 강화" class="ability-radio">
-                                    <div class="ability-name">신체 강화</div>
-                                    <div class="ability-timing">상시</div>
-                                    <div class="ability-desc">신체능력을 일시적으로 강화한다. 체육 관련 판정에 +2 보너스.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-대인" value="감정 차단" class="ability-radio">
-                                    <div class="ability-name">감정 차단</div>
-                                    <div class="ability-timing">방어</div>
-                                    <div class="ability-desc">정신적 공격에 저항한다. 정신계 피해 무효화.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-감각" value="위험 감지" class="ability-radio">
-                                    <div class="ability-name">위험 감지</div>
-                                    <div class="ability-timing">상시</div>
-                                    <div class="ability-desc">위험을 미리 감지한다. 기습 공격 무효, 회피 판정에 +2.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-지식" value="치유화" class="ability-radio">
-                                    <div class="ability-name">치유화</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">자신이나 동료를 치유한다. 생명력 1D6 회복.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-괴이" value="결계" class="ability-radio">
-                                    <div class="ability-name">결계</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">보호결계를 만든다. 시나리오 중 안전한 공간 1개 생성.</div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- 보조 어빌리티 -->
-                        <tr class="support-type">
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-사령술" value="영혼 대화" class="ability-radio">
-                                    <div class="ability-name">영혼 대화</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">죽은 자의 영혼과 대화한다. 과거 정보 획득.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-체육" value="초신속" class="ability-radio">
-                                    <div class="ability-name">초신속</div>
-                                    <div class="ability-timing">이동</div>
-                                    <div class="ability-desc">순간적으로 빠르게 이동한다. 전투에서 먼저 행동.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-대인" value="마음 읽기" class="ability-radio">
-                                    <div class="ability-name">마음 읽기</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">상대의 마음을 읽는다. 숨겨진 정보나 의도 파악.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-감각" value="꽃 감지" class="ability-radio">
-                                    <div class="ability-name">꽃 감지</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">서천꽃이나 그 영향을 감지한다. 목표 위치 파악.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-지식" value="기억 복원" class="ability-radio">
-                                    <div class="ability-name">기억 복원</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">잃어버린 기억을 복원한다. 과거 사건 재구성.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-괴이" value="괴이 추적" class="ability-radio">
-                                    <div class="ability-name">괴이 추적</div>
-                                    <div class="ability-timing">메인</div>
-                                    <div class="ability-desc">괴이의 흔적을 추적한다. 숨겨진 괴이 발견.</div>
-                                </div>
-                            </td>
-                        </tr>
-                        
-                        <!-- 패시브 어빌리티 -->
-                        <tr class="passive-type">
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-사령술" value="영시" class="ability-radio">
-                                    <div class="ability-name">영시</div>
-                                    <div class="ability-timing">패시브</div>
-                                    <div class="ability-desc">영적 존재를 볼 수 있다. 투명한 적 자동 발견.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-체육" value="불사신" class="ability-radio">
-                                    <div class="ability-name">불사신</div>
-                                    <div class="ability-timing">패시브</div>
-                                    <div class="ability-desc">치명상을 입어도 즉사하지 않는다. 생명력 0에서 1턴 더 행동.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-대인" value="카리스마" class="ability-radio">
-                                    <div class="ability-name">카리스마</div>
-                                    <div class="ability-timing">패시브</div>
-                                    <div class="ability-desc">타고난 매력. 대인 관련 모든 판정에 +1 보너스.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-감각" value="예지" class="ability-radio">
-                                    <div class="ability-name">예지</div>
-                                    <div class="ability-timing">패시브</div>
-                                    <div class="ability-desc">미래를 어렴풋이 본다. 하루 1회 판정 재굴림.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-지식" value="박학다식" class="ability-radio">
-                                    <div class="ability-name">박학다식</div>
-                                    <div class="ability-timing">패시브</div>
-                                    <div class="ability-desc">폭넓은 지식. 지식 관련 모든 판정에 +1 보너스.</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ability-cell">
-                                    <input type="radio" name="ability-괴이" value="괴이 친화" class="ability-radio">
-                                    <div class="ability-name">괴이 친화</div>
-                                    <div class="ability-timing">패시브</div>
-                                    <div class="ability-desc">괴이에게 친근감을 준다. 적대적이지 않은 괴이와 교류 가능.</div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="ability-selection-grid">
+                    <div class="ability-category">
+                        <h3>⚡ 사령술</h3>
+                        <select id="ability-사령술" class="ability-dropdown">
+                            <option value="">선택하세요</option>
+                            <option value="영혼 채찍" selected>영혼 채찍 (공격)</option>
+                            <option value="영적 보호막">영적 보호막 (방어)</option>
+                            <option value="영혼 대화">영혼 대화 (보조)</option>
+                            <option value="영시">영시 (패시브)</option>
+                        </select>
+                        <div class="ability-description" id="desc-사령술">영적 에너지로 채찍을 만들어 공격한다. 명중 시 1D6+1 피해. 영체에게 추가 1D6 피해.</div>
+                    </div>
+                    
+                    <div class="ability-category">
+                        <h3>🏃 체육</h3>
+                        <select id="ability-체육" class="ability-dropdown">
+                            <option value="">선택하세요</option>
+                            <option value="천상무" selected>천상무 (공격)</option>
+                            <option value="신체 강화">신체 강화 (방어)</option>
+                            <option value="초신속">초신속 (보조)</option>
+                            <option value="불사신">불사신 (패시브)</option>
+                        </select>
+                        <div class="ability-description" id="desc-체육">서천의 무술로 적을 공격한다. 명중 시 1D6 피해, 펌블 불가.</div>
+                    </div>
+                    
+                    <div class="ability-category">
+                        <h3>🗣️ 대인</h3>
+                        <select id="ability-대인" class="ability-dropdown">
+                            <option value="">선택하세요</option>
+                            <option value="위압" selected>위압 (공격)</option>
+                            <option value="감정 차단">감정 차단 (방어)</option>
+                            <option value="마음 읽기">마음 읽기 (보조)</option>
+                            <option value="카리스마">카리스마 (패시브)</option>
+                        </select>
+                        <div class="ability-description" id="desc-대인">신성한 기운으로 적을 압도한다. 성공 시 대상이 다음 턴 행동 불가.</div>
+                    </div>
+                    
+                    <div class="ability-category">
+                        <h3>👁️ 감각</h3>
+                        <select id="ability-감각" class="ability-dropdown">
+                            <option value="">선택하세요</option>
+                            <option value="꽃잎 폭풍" selected>꽃잎 폭풍 (공격)</option>
+                            <option value="위험 감지">위험 감지 (방어)</option>
+                            <option value="꽃 감지">꽃 감지 (보조)</option>
+                            <option value="예지">예지 (패시브)</option>
+                        </select>
+                        <div class="ability-description" id="desc-감각">날카로운 꽃잎을 날린다. 3명까지 동시 공격, 각자 1D6 피해.</div>
+                    </div>
+                    
+                    <div class="ability-category">
+                        <h3>📚 지식</h3>
+                        <select id="ability-지식" class="ability-dropdown">
+                            <option value="">선택하세요</option>
+                            <option value="정화의 빛" selected>정화의 빛 (공격)</option>
+                            <option value="치유화">치유화 (방어)</option>
+                            <option value="기억 복원">기억 복원 (보조)</option>
+                            <option value="박학다식">박학다식 (패시브)</option>
+                        </select>
+                        <div class="ability-description" id="desc-지식">신성한 빛으로 악령을 정화한다. 괴이에게 2D6, 일반에게 1 피해.</div>
+                    </div>
+                    
+                    <div class="ability-category">
+                        <h3>👻 괴이</h3>
+                        <select id="ability-괴이" class="ability-dropdown">
+                            <option value="">선택하세요</option>
+                            <option value="괴이 봉인" selected>괴이 봉인 (공격)</option>
+                            <option value="결계">결계 (방어)</option>
+                            <option value="괴이 추적">괴이 추적 (보조)</option>
+                            <option value="괴이 친화">괴이 친화 (패시브)</option>
+                        </select>
+                        <div class="ability-description" id="desc-괴이">괴이의 힘을 봉인한다. 성공 시 대상의 특수능력 1턴 봉쇄.</div>
+                    </div>
+                </div>
 
                 <div class="selected-abilities">
-                    <h3>선택된 어빌리티 (<span id="selectedAbilityCount">0</span>/6)</h3>
-                    <div class="ability-list" id="selectedAbilities"></div>
+                    <h3>선택된 어빌리티 (<span id="selectedAbilityCount">6</span>/6)</h3>
+                    <div class="ability-list" id="selectedAbilities">
+                        <div class="ability-item">영혼 채찍 (사령술)</div>
+                        <div class="ability-item">천상무 (체육)</div>
+                        <div class="ability-item">위압 (대인)</div>
+                        <div class="ability-item">꽃잎 폭풍 (감각)</div>
+                        <div class="ability-item">정화의 빛 (지식)</div>
+                        <div class="ability-item">괴이 봉인 (괴이)</div>
+                    </div>
                 </div>
             </div>
 
@@ -1749,23 +1530,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="dice-roller">
-                <h3>🎲 판정 시스템</h3>
-                <div class="dice-input">
-                    <label>판정할 특기:</label>
-                    <select id="targetSkill">
-                        <option value="">특기를 선택하세요</option>
-                    </select>
-                </div>
-                <div class="dice-input">
-                    <label>식신의 힘:</label>
-                    <input type="checkbox" id="useShikigami">
-                    <span>식신의 힘을 빌린다 (+4 보너스, 영력 1 소모)</span>
-                </div>
-                <button class="roll-button" onclick="rollDice()">🎲 주사위 굴리기</button>
-                <div class="roll-result" id="rollResult">판정 결과가 여기에 표시됩니다</div>
-            </div>
         </div>
     </div>
 
@@ -1776,9 +1540,44 @@
             '감각': 0, '지식': 0, '괴이': 0
         };
         let skillValues = {};
-        let selectedAbilities = {};
+        let selectedAbilities = {
+            '사령술': '영혼 채찍',
+            '체육': '천상무',
+            '대인': '위압',
+            '감각': '꽃잎 폭풍',
+            '지식': '정화의 빛',
+            '괴이': '괴이 봉인'
+        };
         let curiosityIndex = -1;
         let fear = '';
+
+        // 어빌리티 데이터
+        const abilityDescriptions = {
+            '영혼 채찍': '영적 에너지로 채찍을 만들어 공격한다. 명중 시 1D6+1 피해. 영체에게 추가 1D6 피해.',
+            '영적 보호막': '영적 방어막을 전개한다. 피해를 1D6만큼 감소시킨다.',
+            '영혼 대화': '죽은 자의 영혼과 대화한다. 과거 정보 획득.',
+            '영시': '영적 존재를 볼 수 있다. 투명한 적 자동 발견.',
+            '천상무': '서천의 무술로 적을 공격한다. 명중 시 1D6 피해, 펌블 불가.',
+            '신체 강화': '신체능력을 일시적으로 강화한다. 체육 관련 판정에 +2 보너스.',
+            '초신속': '순간적으로 빠르게 이동한다. 전투에서 먼저 행동.',
+            '불사신': '치명상을 입어도 즉사하지 않는다. 생명력 0에서 1턴 더 행동.',
+            '위압': '신성한 기운으로 적을 압도한다. 성공 시 대상이 다음 턴 행동 불가.',
+            '감정 차단': '정신적 공격에 저항한다. 정신계 피해 무효화.',
+            '마음 읽기': '상대의 마음을 읽는다. 숨겨진 정보나 의도 파악.',
+            '카리스마': '타고난 매력. 대인 관련 모든 판정에 +1 보너스.',
+            '꽃잎 폭풍': '날카로운 꽃잎을 날린다. 3명까지 동시 공격, 각자 1D6 피해.',
+            '위험 감지': '위험을 미리 감지한다. 기습 공격 무효, 회피 판정에 +2.',
+            '꽃 감지': '서천꽃이나 그 영향을 감지한다. 목표 위치 파악.',
+            '예지': '미래를 어렴풋이 본다. 하루 1회 판정 재굴림.',
+            '정화의 빛': '신성한 빛으로 악령을 정화한다. 괴이에게 2D6, 일반에게 1 피해.',
+            '치유화': '자신이나 동료를 치유한다. 생명력 1D6 회복.',
+            '기억 복원': '잃어버린 기억을 복원한다. 과거 사건 재구성.',
+            '박학다식': '폭넓은 지식. 지식 관련 모든 판정에 +1 보너스.',
+            '괴이 봉인': '괴이의 힘을 봉인한다. 성공 시 대상의 특수능력 1턴 봉쇄.',
+            '결계': '보호결계를 만든다. 시나리오 중 안전한 공간 1개 생성.',
+            '괴이 추적': '괴이의 흔적을 추적한다. 숨겨진 괴이 발견.',
+            '괴이 친화': '괴이에게 친근감을 준다. 적대적이지 않은 괴이와 교류 가능.'
+        };
 
         // 초기 판정값 설정
         function initializeSkillValues() {
@@ -1787,31 +1586,18 @@
                 const skill = cell.getAttribute('data-skill');
                 skillValues[skill] = 12;
             });
-            populateAllSkills();
             updateDicebotSkillDropdown();
+            updateDicebotAbilityDropdown();
         }
 
-        // 모든 특기를 드롭다운에 추가
-        function populateAllSkills() {
-            const dropdown = document.getElementById('targetSkill');
+        // 다이스봇 특기 드롭다운 업데이트 (모든 특기 포함)
+        function updateDicebotSkillDropdown() {
+            const dropdown = document.getElementById('dicebotSkill');
             dropdown.innerHTML = '<option value="">특기를 선택하세요</option>';
             
             const skillCells = document.querySelectorAll('td[data-skill]');
             skillCells.forEach(cell => {
                 const skill = cell.getAttribute('data-skill');
-                const option = document.createElement('option');
-                option.value = skill;
-                option.textContent = `${skill} (목표값: ${skillValues[skill]})`;
-                dropdown.appendChild(option);
-            });
-        }
-
-        // 다이스봇 특기 드롭다운 업데이트
-        function updateDicebotSkillDropdown() {
-            const dropdown = document.getElementById('dicebotSkill');
-            dropdown.innerHTML = '<option value="">특기를 선택하세요</option>';
-            
-            Object.keys(selectedSkills).forEach(skill => {
                 const option = document.createElement('option');
                 option.value = skill;
                 option.textContent = `${skill} (목표값: ${skillValues[skill]})`;
@@ -1824,13 +1610,38 @@
             const dropdown = document.getElementById('dicebotAbility');
             dropdown.innerHTML = '<option value="">어빌리티를 선택하세요</option>';
             
-            Object.keys(selectedAbilities).forEach(ability => {
+            Object.values(selectedAbilities).forEach(ability => {
                 const option = document.createElement('option');
                 option.value = ability;
                 option.textContent = ability;
                 dropdown.appendChild(option);
             });
         }
+
+        // 어빌리티 드롭다운 이벤트 리스너
+        document.querySelectorAll('.ability-dropdown').forEach(dropdown => {
+            dropdown.addEventListener('change', function() {
+                const category = this.id.split('-')[1];
+                const selectedValue = this.value;
+                
+                if (selectedValue) {
+                    selectedAbilities[category] = selectedValue;
+                    
+                    // 설명 업데이트
+                    const descElement = document.getElementById(`desc-${category}`);
+                    descElement.textContent = abilityDescriptions[selectedValue] || '설명이 없습니다.';
+                } else {
+                    delete selectedAbilities[category];
+                    
+                    // 설명 초기화
+                    const descElement = document.getElementById(`desc-${category}`);
+                    descElement.textContent = '어빌리티를 선택해주세요.';
+                }
+                
+                updateSelectedAbilities();
+                updateDicebotAbilityDropdown();
+            });
+        });
 
         // 사이코로 픽션 룰 적용
         function updateSkillValues() {
@@ -1864,7 +1675,6 @@
             });
 
             updateSkillDisplay();
-            updateAllSkillsDropdown();
             updateDicebotSkillDropdown();
         }
 
@@ -2010,19 +1820,6 @@
             });
         });
 
-        // 어빌리티 라디오 버튼 이벤트
-        document.querySelectorAll('.ability-radio').forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.checked) {
-                    const category = this.name.split('-')[1];
-                    const abilityName = this.value;
-                    selectedAbilities[category] = abilityName;
-                    updateSelectedAbilities();
-                    updateDicebotAbilityDropdown();
-                }
-            });
-        });
-
         // 특기 표시 업데이트
         function updateSkillDisplay() {
             const skillCells = document.querySelectorAll('td[data-skill]');
@@ -2077,25 +1874,6 @@
             });
             
             countSpan.textContent = totalCount;
-        }
-
-        function updateAllSkillsDropdown() {
-            const dropdown = document.getElementById('targetSkill');
-            const currentValue = dropdown.value;
-            dropdown.innerHTML = '<option value="">특기를 선택하세요</option>';
-            
-            const skillCells = document.querySelectorAll('td[data-skill]');
-            skillCells.forEach(cell => {
-                const skill = cell.getAttribute('data-skill');
-                const option = document.createElement('option');
-                option.value = skill;
-                option.textContent = `${skill} (목표값: ${skillValues[skill]})`;
-                dropdown.appendChild(option);
-            });
-            
-            if (currentValue) {
-                dropdown.value = currentValue;
-            }
         }
 
         // 다이스봇 명령어 생성
@@ -2172,62 +1950,10 @@
             });
         }
 
-        function rollDice() {
-            const targetSkill = document.getElementById('targetSkill').value;
-            const useShikigami = document.getElementById('useShikigami').checked;
-            const resultDiv = document.getElementById('rollResult');
-            
-            if (!targetSkill) {
-                alert('판정할 특기를 선택해주세요.');
-                return;
-            }
-            
-            let dice1 = Math.floor(Math.random() * 6) + 1;
-            let dice2 = Math.floor(Math.random() * 6) + 1;
-            let total = dice1 + dice2;
-            let targetValue = skillValues[targetSkill];
-            let bonus = 0;
-            let resultText = '';
-            
-            if (useShikigami) {
-                bonus += 4;
-                const currentSpiritualPower = parseInt(document.getElementById('spiritualPower').value);
-                if (currentSpiritualPower > 0) {
-                    document.getElementById('spiritualPower').value = currentSpiritualPower - 1;
-                }
-            }
-            
-            if (fear === targetSkill) {
-                bonus -= 2;
-            }
-            
-            const finalTotal = total + bonus;
-            
-            resultText = `${targetSkill} 판정: [${dice1}] + [${dice2}] = ${total}`;
-            if (bonus > 0) resultText += ` + ${bonus}(보너스)`;
-            if (bonus < 0) resultText += ` ${bonus}(페널티)`;
-            resultText += ` = ${finalTotal}`;
-            
-            let success = '';
-            if (dice1 === 1 && dice2 === 1) {
-                success = ' - 💀 펌블 (자동실패)';
-            } else if (dice1 === 6 && dice2 === 6) {
-                success = ' - ✨ 스페셜 (대성공)';
-            } else if (finalTotal >= targetValue) {
-                success = ' - ✅ 성공';
-            } else {
-                success = ' - ❌ 실패';
-            }
-            
-            resultDiv.innerHTML = `
-                <div><strong>${targetSkill}</strong> 판정 (목표값: ${targetValue})</div>
-                <div>${resultText}${success}</div>
-            `;
-        }
-
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
             initializeSkillValues();
+            updateSelectedAbilities();
         });
     </script>
 </body>
