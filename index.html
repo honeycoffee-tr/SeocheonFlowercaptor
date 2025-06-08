@@ -1,0 +1,2234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서천꽃밭 동자 - 인터랙티브 캐릭터 시트</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        
+        @media (min-width: 768px) {
+            body { 
+                padding: 20px; 
+                font-size: 16px; 
+            }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .header { padding: 20px; }
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        @media (min-width: 768px) {
+            .header h1 { font-size: 2.5em; }
+        }
+        
+        .content {
+            padding: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .content { padding: 30px; }
+        }
+        
+        .character-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .character-info {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        
+        @media (min-width: 768px) {
+            .info-box { padding: 15px; }
+        }
+        
+        .info-box label {
+            font-weight: bold;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .info-box input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+        
+        .stat-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        
+        .stat-input {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .stat-input label {
+            min-width: 80px;
+            font-weight: bold;
+        }
+        
+        .stat-input input {
+            width: 60px;
+            padding: 5px;
+            margin: 0 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 0.7em;
+        }
+        
+        @media (min-width: 768px) {
+            .main-table { font-size: 0.8em; }
+        }
+        
+        .main-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 2px;
+            text-align: center;
+            font-weight: bold;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+            font-size: 0.8em;
+        }
+        
+        @media (min-width: 768px) {
+            .main-table th {
+                padding: 10px 4px;
+                font-size: 1em;
+            }
+        }
+        
+        .main-table th:last-child {
+            border-right: none;
+        }
+        
+        .main-table th.curiosity-selected {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        }
+        
+        .main-table td {
+            padding: 4px 2px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            min-height: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .main-table td {
+                padding: 6px 3px;
+                min-height: 35px;
+            }
+        }
+        
+        .main-table td:last-child {
+            border-right: none;
+        }
+        
+        .main-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .main-table tr:hover {
+            background: #e3f2fd;
+        }
+        
+        .skill-cell {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 25px;
+            padding: 2px;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-cell { min-height: 30px; }
+        }
+        
+        .skill-checkbox {
+            width: 14px;
+            height: 14px;
+            margin-right: 3px;
+            cursor: pointer;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-checkbox {
+                width: 16px;
+                height: 16px;
+                margin-right: 4px;
+            }
+        }
+        
+        .skill-name {
+            flex: 1;
+            text-align: left;
+            font-size: 0.8em;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-name { font-size: 0.85em; }
+        }
+        
+        .skill-value {
+            font-weight: bold;
+            font-size: 0.7em;
+            min-width: 18px;
+            padding: 1px 3px;
+            border-radius: 8px;
+            background: #e0e0e0;
+            color: #333;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-value {
+                font-size: 0.8em;
+                min-width: 20px;
+                padding: 1px 4px;
+                border-radius: 10px;
+            }
+        }
+        
+        .skill-value.selected {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .skill-value.influenced {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .gap-cell {
+            background: #f0f0f0 !important;
+            border: 1px solid #ddd !important;
+            width: 4px !important;
+            min-width: 4px !important;
+            max-width: 4px !important;
+            cursor: default !important;
+        }
+        
+        @media (min-width: 768px) {
+            .gap-cell {
+                width: 6px !important;
+                min-width: 6px !important;
+                max-width: 6px !important;
+            }
+        }
+        
+        .gap-cell.curiosity-filled {
+            background: #ffc107 !important;
+            border: 2px solid #ff9800 !important;
+        }
+        
+        .main-table td.curiosity-category {
+            border-left: 4px solid #ffc107;
+            border-right: 4px solid #ffc107;
+        }
+        
+        .main-table td.fear-selected {
+            background: #ffebee !important;
+            border: 2px solid #f44336 !important;
+        }
+        
+        .dice-number {
+            font-weight: bold;
+            color: #667eea;
+            background: #f0f4ff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 0.7em;
+        }
+        
+        @media (min-width: 768px) {
+            .dice-number {
+                width: 25px;
+                height: 25px;
+                font-size: 0.8em;
+            }
+        }
+        
+        .selection-controls {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .selection-controls {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+        
+        .control-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        
+        .control-box h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1em;
+        }
+        
+        .control-box select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .dice-roller {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .dice-roller { padding: 20px; }
+        }
+        
+        .dice-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .dice-input {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        
+        .dice-input label {
+            font-weight: bold;
+            min-width: 120px;
+        }
+        
+        .dice-input select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-width: 150px;
+            font-size: 14px;
+        }
+        
+        .dice-input input[type="checkbox"] {
+            margin: 0 10px;
+        }
+        
+        .roll-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        @media (min-width: 768px) {
+            .roll-button {
+                width: auto;
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+        }
+        
+        .roll-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .roll-result {
+            background: white;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 1em;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @media (min-width: 768px) {
+            .roll-result {
+                padding: 20px;
+                font-size: 1.2em;
+            }
+        }
+        
+        .selected-skills {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .selected-skills h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        
+        .skill-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 0.8em;
+        }
+        
+        @media (min-width: 768px) {
+            .skill-list {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 10px;
+                font-size: 0.9em;
+            }
+        }
+        
+        .skill-item {
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        .note {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #1565c0;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        
+        /* 어빌리티 관련 스타일 */
+        .ability-section {
+            margin: 30px 0;
+        }
+        
+        .ability-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 0.7em;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-table { font-size: 0.85em; }
+        }
+        
+        .ability-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        @media (min-width: 768px) {
+            .ability-table th { padding: 12px 8px; }
+        }
+        
+        .ability-table th:last-child {
+            border-right: none;
+        }
+        
+        .ability-table td {
+            padding: 6px 4px;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-table td { padding: 8px; }
+        }
+        
+        .ability-table td:last-child {
+            border-right: none;
+        }
+        
+        .ability-cell {
+            position: relative;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            min-height: 80px;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-cell {
+                padding: 10px;
+                min-height: 100px;
+            }
+        }
+        
+        .ability-cell:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .ability-radio {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-radio {
+                top: 8px;
+                right: 8px;
+                width: 18px;
+                height: 18px;
+            }
+        }
+        
+        .ability-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 4px;
+            font-size: 0.9em;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-name {
+                margin-bottom: 5px;
+                font-size: 1em;
+            }
+        }
+        
+        .ability-timing {
+            font-size: 0.7em;
+            color: #666;
+            background: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-timing {
+                font-size: 0.8em;
+                padding: 2px 6px;
+                border-radius: 12px;
+                margin-bottom: 5px;
+            }
+        }
+        
+        .ability-desc {
+            color: #555;
+            line-height: 1.3;
+            font-size: 0.75em;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-desc {
+                line-height: 1.4;
+                font-size: 0.85em;
+            }
+        }
+        
+        .attack-type { background: #ffebee; border-left: 4px solid #f44336; }
+        .defense-type { background: #e8f5e8; border-left: 4px solid #4caf50; }
+        .support-type { background: #e3f2fd; border-left: 4px solid #2196f3; }
+        .passive-type { background: #f3e5f5; border-left: 4px solid #9c27b0; }
+        .special-type { background: #fff8e1; border-left: 4px solid #ff9800; }
+        
+        .selected-abilities {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .selected-abilities h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        
+        .ability-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            font-size: 0.8em;
+        }
+        
+        @media (min-width: 768px) {
+            .ability-list {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 10px;
+                font-size: 0.9em;
+            }
+        }
+        
+        .ability-item {
+            background: white;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        
+        /* 다이스봇 명령어 생성기 */
+        .dicebot-section {
+            background: #f0f8ff;
+            border: 2px solid #4169e1;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        
+        .dicebot-section h3 {
+            color: #4169e1;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        
+        .command-output {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            word-break: break-all;
+            position: relative;
+        }
+        
+        .copy-button {
+            background: #4169e1;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin: 5px 0;
+            transition: background 0.2s;
+        }
+        
+        .copy-button:hover {
+            background: #3559d1;
+        }
+        
+        .copy-button:active {
+            background: #2a4bc5;
+        }
+        
+        .quick-commands {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .quick-commands {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+        
+        .quick-command {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .quick-command h4 {
+            margin: 0 0 8px 0;
+            color: #333;
+            font-size: 0.9em;
+        }
+        
+        .quick-command .command-text {
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8em;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌸 서천꽃밭 동자 🐉</h1>
+            <p>인터랙티브 캐릭터 시트 (사이코로 픽션 룰)</p>
+        </div>
+        
+        <div class="content">
+            <div class="character-info">
+                <div class="info-box">
+                    <label>이름</label>
+                    <input type="text" id="characterName" placeholder="은하">
+                </div>
+                <div class="info-box">
+                    <label>나이</label>
+                    <input type="text" id="age" placeholder="겉보기 나이">
+                </div>
+                <div class="info-box">
+                    <label>성별</label>
+                    <input type="text" id="gender" placeholder="성별">
+                </div>
+                <div class="info-box">
+                    <label>식신</label>
+                    <input type="text" id="shikigami" placeholder="청">
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-box">
+                    <h3>🌸 능력치</h3>
+                    <div class="stat-input">
+                        <label>영력:</label>
+                        <input type="number" id="spiritualPower" value="6" min="0" max="6">
+                        <span>/ 6</span>
+                    </div>
+                    <div class="stat-input">
+                        <label>정신력:</label>
+                        <input type="number" id="mentalPower" value="6" min="0" max="6">
+                        <span>/ 6</span>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <h3>📋 규칙 안내</h3>
+                    <p style="font-size: 0.9em; margin: 0; line-height: 1.4;">
+                        • 특기는 총 6개까지 선택 가능<br>
+                        • 판정값이 낮을수록 유리함<br>
+                        • 2D6을 굴려 판정값 이상이면 성공<br>
+                        • 식신의 힘을 빌리면 +4 보너스, 영력 1 소모
+                    </p>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>📋 특기 시스템 (사이코로 픽션 룰):</strong><br>
+                • 특기로 선택하면 판정값 5, 갭을 포함한 거리에 따라 6, 7, 8... 순으로 증가<br>
+                • 갭(세로 빈칸)도 1칸으로 계산됨 (대각선 이동 불가)<br>
+                • 호기심 분야를 선택하면 해당 분야 좌우의 갭이 채워져서 거리 단축<br>
+                • 괴이의 오른쪽에는 갭이 없음
+            </div>
+
+            <h2>특기표 - 총 6개까지 선택 가능</h2>
+            <table class="main-table" id="skillTable">
+                <thead>
+                    <tr>
+                        <th>2D6</th>
+                        <th id="header-0">⚡ 사령술<br>(使靈術)</th>
+                        <th class="gap-cell" data-gap="0"></th>
+                        <th id="header-1">🏃 체육<br>(體育)</th>
+                        <th class="gap-cell" data-gap="1"></th>
+                        <th id="header-2">🗣️ 대인<br>(對人)</th>
+                        <th class="gap-cell" data-gap="2"></th>
+                        <th id="header-3">👁️ 감각<br>(感覺)</th>
+                        <th class="gap-cell" data-gap="3"></th>
+                        <th id="header-4">📚 지식<br>(知識)</th>
+                        <th class="gap-cell" data-gap="4"></th>
+                        <th id="header-5">👻 괴이<br>(怪異)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="dice-number">2</div></td>
+                        <td data-category="사령술" data-skill="영혼대화" data-row="0" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">영혼대화</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="0"></td>
+                        <td data-category="체육" data-skill="체력" data-row="0" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">체력</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="0"></td>
+                        <td data-category="대인" data-skill="공감" data-row="0" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">공감</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="0"></td>
+                        <td data-category="감각" data-skill="직감" data-row="0" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">직감</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="0"></td>
+                        <td data-category="지식" data-skill="민속학" data-row="0" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">민속학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="0"></td>
+                        <td data-category="괴이" data-skill="시간" data-row="0" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">시간</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">3</div></td>
+                        <td data-category="사령술" data-skill="영매술" data-row="1" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">영매술</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="1"></td>
+                        <td data-category="체육" data-skill="격투" data-row="1" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">격투</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="1"></td>
+                        <td data-category="대인" data-skill="설득" data-row="1" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">설득</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="1"></td>
+                        <td data-category="감각" data-skill="영시" data-row="1" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">영시</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="1"></td>
+                        <td data-category="지식" data-skill="종교학" data-row="1" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">종교학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="1"></td>
+                        <td data-category="괴이" data-skill="혼돈" data-row="1" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">혼돈</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">4</div></td>
+                        <td data-category="사령술" data-skill="넋다스림" data-row="2" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">넋다스림</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="2"></td>
+                        <td data-category="체육" data-skill="근력" data-row="2" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">근력</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="2"></td>
+                        <td data-category="대인" data-skill="협상" data-row="2" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">협상</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="2"></td>
+                        <td data-category="감각" data-skill="감지" data-row="2" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">감지</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="2"></td>
+                        <td data-category="지식" data-skill="고문서학" data-row="2" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">고문서학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="2"></td>
+                        <td data-category="괴이" data-skill="심해" data-row="2" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">심해</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">5</div></td>
+                        <td data-category="사령술" data-skill="귀신쫓기" data-row="3" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">귀신쫓기</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="3"></td>
+                        <td data-category="체육" data-skill="민첩성" data-row="3" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">민첩성</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="3"></td>
+                        <td data-category="대인" data-skill="위협" data-row="3" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">위협</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="3"></td>
+                        <td data-category="감각" data-skill="추적" data-row="3" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">추적</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="3"></td>
+                        <td data-category="지식" data-skill="의학" data-row="3" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">의학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="3"></td>
+                        <td data-category="괴이" data-skill="죽음" data-row="3" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">죽음</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">6</div></td>
+                        <td data-category="사령술" data-skill="혼령소통" data-row="4" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">혼령소통</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="4"></td>
+                        <td data-category="체육" data-skill="지구력" data-row="4" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">지구력</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="4"></td>
+                        <td data-category="대인" data-skill="속임수" data-row="4" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">속임수</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="4"></td>
+                        <td data-category="감각" data-skill="탐지" data-row="4" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">탐지</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="4"></td>
+                        <td data-category="지식" data-skill="자연과학" data-row="4" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">자연과학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="4"></td>
+                        <td data-category="괴이" data-skill="영혼" data-row="4" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">영혼</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">7</div></td>
+                        <td data-category="사령술" data-skill="신령빙의" data-row="5" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">신령빙의</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="5"></td>
+                        <td data-category="체육" data-skill="회피" data-row="5" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">회피</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="5"></td>
+                        <td data-category="대인" data-skill="매력" data-row="5" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">매력</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="5"></td>
+                        <td data-category="감각" data-skill="예감" data-row="5" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">예감</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="5"></td>
+                        <td data-category="지식" data-skill="심리학" data-row="5" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">심리학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="5"></td>
+                        <td data-category="괴이" data-skill="마술" data-row="5" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">마술</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">8</div></td>
+                        <td data-category="사령술" data-skill="사자소환" data-row="6" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">사자소환</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="6"></td>
+                        <td data-category="체육" data-skill="반사신경" data-row="6" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">반사신경</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="6"></td>
+                        <td data-category="대인" data-skill="거짓말" data-row="6" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">거짓말</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="6"></td>
+                        <td data-category="감각" data-skill="기운감지" data-row="6" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">기운감지</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="6"></td>
+                        <td data-category="지식" data-skill="컴퓨터" data-row="6" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">컴퓨터</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="6"></td>
+                        <td data-category="괴이" data-skill="암측" data-row="6" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">암측</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">9</div></td>
+                        <td data-category="사령술" data-skill="수호령" data-row="7" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">수호령</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="7"></td>
+                        <td data-category="체육" data-skill="균형감각" data-row="7" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">균형감각</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="7"></td>
+                        <td data-category="대인" data-skill="연기" data-row="7" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">연기</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="7"></td>
+                        <td data-category="감각" data-skill="위험감지" data-row="7" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">위험감지</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="7"></td>
+                        <td data-category="지식" data-skill="수사기법" data-row="7" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">수사기법</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="7"></td>
+                        <td data-category="괴이" data-skill="종말" data-row="7" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">종말</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">10</div></td>
+                        <td data-category="사령술" data-skill="원귀제압" data-row="8" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">원귀제압</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="8"></td>
+                        <td data-category="체육" data-skill="무기사용" data-row="8" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">무기사용</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="8"></td>
+                        <td data-category="대인" data-skill="위로" data-row="8" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">위로</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="8"></td>
+                        <td data-category="감각" data-skill="심층시야" data-row="8" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">심층시야</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="8"></td>
+                        <td data-category="지식" data-skill="법학" data-row="8" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">법학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="8"></td>
+                        <td data-category="괴이" data-skill="꿈" data-row="8" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">꿈</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">11</div></td>
+                        <td data-category="사령술" data-skill="신력증폭" data-row="9" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">신력증폭</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="9"></td>
+                        <td data-category="체육" data-skill="체술" data-row="9" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">체술</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="9"></td>
+                        <td data-category="대인" data-skill="화해" data-row="9" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">화해</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="9"></td>
+                        <td data-category="감각" data-skill="예지몽" data-row="9" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">예지몽</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="9"></td>
+                        <td data-category="지식" data-skill="경제학" data-row="9" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">경제학</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="9"></td>
+                        <td data-category="괴이" data-skill="지저" data-row="9" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">지저</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="dice-number">12</div></td>
+                        <td data-category="사령술" data-skill="심판" data-row="10" data-col="0">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">심판</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="0" data-row="10"></td>
+                        <td data-category="체육" data-skill="운동능력" data-row="10" data-col="1">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">운동능력</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="1" data-row="10"></td>
+                        <td data-category="대인" data-skill="설득술" data-row="10" data-col="2">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">설득술</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="2" data-row="10"></td>
+                        <td data-category="감각" data-skill="상식수준" data-row="10" data-col="3">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">상식수준</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="3" data-row="10"></td>
+                        <td data-category="지식" data-skill="종교지식" data-row="10" data-col="4">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">종교지식</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                        <td class="gap-cell" data-gap="4" data-row="10"></td>
+                        <td data-category="괴이" data-skill="우주" data-row="10" data-col="5">
+                            <div class="skill-cell">
+                                <input type="checkbox" class="skill-checkbox">
+                                <span class="skill-name">우주</span>
+                                <span class="skill-value">12</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="selected-skills">
+                <h3>선택된 특기 (<span id="selectedCount">0</span>/6)</h3>
+                <div class="skill-list" id="selectedSkills"></div>
+            </div>
+
+            <div class="selection-controls">
+                <div class="control-box">
+                    <h3>🎯 호기심 (관심분야)</h3>
+                    <p>선택한 분야의 갭이 채워져 판정이 유리해짐</p>
+                    <select id="curiositySelect">
+                        <option value="">호기심 분야를 선택하세요</option>
+                        <option value="0">⚡ 사령술 (영혼과 소통)</option>
+                        <option value="1">🏃 체육 (신체 능력)</option>
+                        <option value="2">🗣️ 대인 (사회적 능력)</option>
+                        <option value="3">👁️ 감각 (지각 능력)</option>
+                        <option value="4">📚 지식 (학문)</option>
+                        <option value="5">👻 괴이 (초자연)</option>
+                    </select>
+                    <p><strong>현재 호기심:</strong> <span id="currentCuriosity">선택안함</span></p>
+                </div>
+                <div class="control-box">
+                    <h3>😱 약점 (취약점)</h3>
+                    <p>해당 괴이 조우 시 판정 불리</p>
+                    <select id="fearSelect">
+                        <option value="">약점을 선택하세요</option>
+                        <option value="시간">시간 - 시간왜곡 현상</option>
+                        <option value="혼돈">혼돈 - 질서파괴 존재</option>
+                        <option value="심해">심해 - 깊은 어둠의 공포</option>
+                        <option value="죽음">죽음 - 생명소멸 현상</option>
+                        <option value="영혼">영혼 - 영체와의 조우</option>
+                        <option value="마술">마술 - 악마계 술법</option>
+                        <option value="암측">암측 - 어둠의 공포</option>
+                        <option value="종말">종말 - 세상의 끝</option>
+                        <option value="꿈">꿈 - 몽환과 환상</option>
+                        <option value="지저">지저 - 지하세계</option>
+                        <option value="우주">우주 - 무한공간의 공포</option>
+                    </select>
+                    <p><strong>현재 약점:</strong> <span id="currentFear">선택안함</span></p>
+                </div>
+            </div>
+
+            <!-- 어빌리티 선택 섹션 -->
+            <div class="ability-section">
+                <h2>🌟 어빌리티 선택 - 각 분야별 1개씩 총 6개</h2>
+                
+                <table class="ability-table">
+                    <thead>
+                        <tr>
+                            <th>⚡ 사령술</th>
+                            <th>🏃 체육</th>
+                            <th>🗣️ 대인</th>
+                            <th>👁️ 감각</th>
+                            <th>📚 지식</th>
+                            <th>👻 괴이</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 공격 어빌리티 -->
+                        <tr class="attack-type">
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-사령술" value="영혼 채찍" class="ability-radio">
+                                    <div class="ability-name">영혼 채찍</div>
+                                    <div class="ability-timing">공격</div>
+                                    <div class="ability-desc">영적 에너지로 채찍을 만들어 공격한다. 명중 시 1D6+1 피해. 영체에게 추가 1D6 피해.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-체육" value="천상무" class="ability-radio">
+                                    <div class="ability-name">천상무</div>
+                                    <div class="ability-timing">공격</div>
+                                    <div class="ability-desc">서천의 무술로 적을 공격한다. 명중 시 1D6 피해, 펌블 불가.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-대인" value="위압" class="ability-radio">
+                                    <div class="ability-name">위압</div>
+                                    <div class="ability-timing">공격</div>
+                                    <div class="ability-desc">신성한 기운으로 적을 압도한다. 성공 시 대상이 다음 턴 행동 불가.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-감각" value="꽃잎 폭풍" class="ability-radio">
+                                    <div class="ability-name">꽃잎 폭풍</div>
+                                    <div class="ability-timing">공격</div>
+                                    <div class="ability-desc">날카로운 꽃잎을 날린다. 3명까지 동시 공격, 각자 1D6 피해.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-지식" value="정화의 빛" class="ability-radio">
+                                    <div class="ability-name">정화의 빛</div>
+                                    <div class="ability-timing">공격</div>
+                                    <div class="ability-desc">신성한 빛으로 악령을 정화한다. 괴이에게 2D6, 일반에게 1 피해.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-괴이" value="괴이 봉인" class="ability-radio">
+                                    <div class="ability-name">괴이 봉인</div>
+                                    <div class="ability-timing">공격</div>
+                                    <div class="ability-desc">괴이의 힘을 봉인한다. 성공 시 대상의 특수능력 1턴 봉쇄.</div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 방어 어빌리티 -->
+                        <tr class="defense-type">
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-사령술" value="영적 보호막" class="ability-radio">
+                                    <div class="ability-name">영적 보호막</div>
+                                    <div class="ability-timing">방어</div>
+                                    <div class="ability-desc">영적 방어막을 전개한다. 피해를 1D6만큼 감소시킨다.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-체육" value="신체 강화" class="ability-radio">
+                                    <div class="ability-name">신체 강화</div>
+                                    <div class="ability-timing">상시</div>
+                                    <div class="ability-desc">신체능력을 일시적으로 강화한다. 체육 관련 판정에 +2 보너스.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-대인" value="감정 차단" class="ability-radio">
+                                    <div class="ability-name">감정 차단</div>
+                                    <div class="ability-timing">방어</div>
+                                    <div class="ability-desc">정신적 공격에 저항한다. 정신계 피해 무효화.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-감각" value="위험 감지" class="ability-radio">
+                                    <div class="ability-name">위험 감지</div>
+                                    <div class="ability-timing">상시</div>
+                                    <div class="ability-desc">위험을 미리 감지한다. 기습 공격 무효, 회피 판정에 +2.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-지식" value="치유화" class="ability-radio">
+                                    <div class="ability-name">치유화</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">자신이나 동료를 치유한다. 생명력 1D6 회복.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-괴이" value="결계" class="ability-radio">
+                                    <div class="ability-name">결계</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">보호결계를 만든다. 시나리오 중 안전한 공간 1개 생성.</div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 보조 어빌리티 -->
+                        <tr class="support-type">
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-사령술" value="영혼 대화" class="ability-radio">
+                                    <div class="ability-name">영혼 대화</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">죽은 자의 영혼과 대화한다. 과거 정보 획득.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-체육" value="초신속" class="ability-radio">
+                                    <div class="ability-name">초신속</div>
+                                    <div class="ability-timing">이동</div>
+                                    <div class="ability-desc">순간적으로 빠르게 이동한다. 전투에서 먼저 행동.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-대인" value="마음 읽기" class="ability-radio">
+                                    <div class="ability-name">마음 읽기</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">상대의 마음을 읽는다. 숨겨진 정보나 의도 파악.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-감각" value="꽃 감지" class="ability-radio">
+                                    <div class="ability-name">꽃 감지</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">서천꽃이나 그 영향을 감지한다. 목표 위치 파악.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-지식" value="기억 복원" class="ability-radio">
+                                    <div class="ability-name">기억 복원</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">잃어버린 기억을 복원한다. 과거 사건 재구성.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-괴이" value="괴이 추적" class="ability-radio">
+                                    <div class="ability-name">괴이 추적</div>
+                                    <div class="ability-timing">메인</div>
+                                    <div class="ability-desc">괴이의 흔적을 추적한다. 숨겨진 괴이 발견.</div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- 패시브 어빌리티 -->
+                        <tr class="passive-type">
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-사령술" value="영시" class="ability-radio">
+                                    <div class="ability-name">영시</div>
+                                    <div class="ability-timing">패시브</div>
+                                    <div class="ability-desc">영적 존재를 볼 수 있다. 투명한 적 자동 발견.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-체육" value="불사신" class="ability-radio">
+                                    <div class="ability-name">불사신</div>
+                                    <div class="ability-timing">패시브</div>
+                                    <div class="ability-desc">치명상을 입어도 즉사하지 않는다. 생명력 0에서 1턴 더 행동.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-대인" value="카리스마" class="ability-radio">
+                                    <div class="ability-name">카리스마</div>
+                                    <div class="ability-timing">패시브</div>
+                                    <div class="ability-desc">타고난 매력. 대인 관련 모든 판정에 +1 보너스.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-감각" value="예지" class="ability-radio">
+                                    <div class="ability-name">예지</div>
+                                    <div class="ability-timing">패시브</div>
+                                    <div class="ability-desc">미래를 어렴풋이 본다. 하루 1회 판정 재굴림.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-지식" value="박학다식" class="ability-radio">
+                                    <div class="ability-name">박학다식</div>
+                                    <div class="ability-timing">패시브</div>
+                                    <div class="ability-desc">폭넓은 지식. 지식 관련 모든 판정에 +1 보너스.</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ability-cell">
+                                    <input type="radio" name="ability-괴이" value="괴이 친화" class="ability-radio">
+                                    <div class="ability-name">괴이 친화</div>
+                                    <div class="ability-timing">패시브</div>
+                                    <div class="ability-desc">괴이에게 친근감을 준다. 적대적이지 않은 괴이와 교류 가능.</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="selected-abilities">
+                    <h3>선택된 어빌리티 (<span id="selectedAbilityCount">0</span>/6)</h3>
+                    <div class="ability-list" id="selectedAbilities"></div>
+                </div>
+            </div>
+
+            <!-- 다이스봇 명령어 생성기 -->
+            <div class="dicebot-section">
+                <h3>🎲 Rollem 다이스봇 명령어 생성기</h3>
+                <p>선택한 특기와 어빌리티를 기반으로 디스코드용 명령어를 자동 생성합니다!</p>
+                
+                <div class="dice-input">
+                    <label>🎯 판정할 특기:</label>
+                    <select id="dicebotSkill">
+                        <option value="">특기를 선택하세요</option>
+                    </select>
+                </div>
+                
+                <div class="dice-input">
+                    <label>⚡ 어빌리티 사용:</label>
+                    <select id="dicebotAbility">
+                        <option value="">어빌리티를 선택하세요</option>
+                    </select>
+                </div>
+                
+                <div class="dice-input">
+                    <input type="checkbox" id="dicebotShikigami">
+                    <span>식신의 힘 사용 (+4 보너스)</span>
+                </div>
+                
+                <button class="roll-button" onclick="generateDicebotCommand()">🤖 명령어 생성</button>
+                
+                <div id="generatedCommand" class="command-output" style="display: none;">
+                    <div id="commandText"></div>
+                    <button class="copy-button" onclick="copyCommand()">📋 복사</button>
+                </div>
+                
+                <div class="quick-commands">
+                    <div class="quick-command">
+                        <h4>🎲 기본 판정</h4>
+                        <div class="command-text">!r 2d6 [특기명] 판정 (목표값: [숫자])</div>
+                        <button class="copy-button" onclick="copyQuickCommand('!r 2d6 [특기명] 판정 (목표값: [숫자])')">복사</button>
+                    </div>
+                    
+                    <div class="quick-command">
+                        <h4>⚡ 식신의 힘</h4>
+                        <div class="command-text">!r 2d6+4 [특기명] 판정 - 식신의 힘! (목표값: [숫자])</div>
+                        <button class="copy-button" onclick="copyQuickCommand('!r 2d6+4 [특기명] 판정 - 식신의 힘! (목표값: [숫자])')">복사</button>
+                    </div>
+                    
+                    <div class="quick-command">
+                        <h4>🌟 어빌리티 발동</h4>
+                        <div class="command-text">!r 2d6 [어빌리티명] 발동! ([분야] 계열)</div>
+                        <button class="copy-button" onclick="copyQuickCommand('!r 2d6 [어빌리티명] 발동! ([분야] 계열)')">복사</button>
+                    </div>
+                    
+                    <div class="quick-command">
+                        <h4>⚔️ 피해 굴림</h4>
+                        <div class="command-text">!r 1d6+1 피해 굴림 - [어빌리티명]</div>
+                        <button class="copy-button" onclick="copyQuickCommand('!r 1d6+1 피해 굴림 - [어빌리티명])')">복사</button>
+                    </div>
+                    
+                    <div class="quick-command">
+                        <h4>🐉 청의 지원</h4>
+                        <div class="command-text">!r 2d6 [특기명] 재굴림 - 청의 지원!</div>
+                        <button class="copy-button" onclick="copyQuickCommand('!r 2d6 [특기명] 재굴림 - 청의 지원!')">복사</button>
+                    </div>
+                    
+                    <div class="quick-command">
+                        <h4>❤️ 치유</h4>
+                        <div class="command-text">!r 1d6 생명력/정신력 회복</div>
+                        <button class="copy-button" onclick="copyQuickCommand('!r 1d6 생명력/정신력 회복')">복사</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dice-roller">
+                <h3>🎲 판정 시스템</h3>
+                <div class="dice-input">
+                    <label>판정할 특기:</label>
+                    <select id="targetSkill">
+                        <option value="">특기를 선택하세요</option>
+                    </select>
+                </div>
+                <div class="dice-input">
+                    <label>식신의 힘:</label>
+                    <input type="checkbox" id="useShikigami">
+                    <span>식신의 힘을 빌린다 (+4 보너스, 영력 1 소모)</span>
+                </div>
+                <button class="roll-button" onclick="rollDice()">🎲 주사위 굴리기</button>
+                <div class="roll-result" id="rollResult">판정 결과가 여기에 표시됩니다</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedSkills = {};
+        let skillCounts = {
+            '사령술': 0, '체육': 0, '대인': 0, 
+            '감각': 0, '지식': 0, '괴이': 0
+        };
+        let skillValues = {};
+        let selectedAbilities = {};
+        let curiosityIndex = -1;
+        let fear = '';
+
+        // 초기 판정값 설정
+        function initializeSkillValues() {
+            const skillCells = document.querySelectorAll('td[data-skill]');
+            skillCells.forEach(cell => {
+                const skill = cell.getAttribute('data-skill');
+                skillValues[skill] = 12;
+            });
+            populateAllSkills();
+            updateDicebotSkillDropdown();
+        }
+
+        // 모든 특기를 드롭다운에 추가
+        function populateAllSkills() {
+            const dropdown = document.getElementById('targetSkill');
+            dropdown.innerHTML = '<option value="">특기를 선택하세요</option>';
+            
+            const skillCells = document.querySelectorAll('td[data-skill]');
+            skillCells.forEach(cell => {
+                const skill = cell.getAttribute('data-skill');
+                const option = document.createElement('option');
+                option.value = skill;
+                option.textContent = `${skill} (목표값: ${skillValues[skill]})`;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // 다이스봇 특기 드롭다운 업데이트
+        function updateDicebotSkillDropdown() {
+            const dropdown = document.getElementById('dicebotSkill');
+            dropdown.innerHTML = '<option value="">특기를 선택하세요</option>';
+            
+            Object.keys(selectedSkills).forEach(skill => {
+                const option = document.createElement('option');
+                option.value = skill;
+                option.textContent = `${skill} (목표값: ${skillValues[skill]})`;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // 다이스봇 어빌리티 드롭다운 업데이트
+        function updateDicebotAbilityDropdown() {
+            const dropdown = document.getElementById('dicebotAbility');
+            dropdown.innerHTML = '<option value="">어빌리티를 선택하세요</option>';
+            
+            Object.keys(selectedAbilities).forEach(ability => {
+                const option = document.createElement('option');
+                option.value = ability;
+                option.textContent = ability;
+                dropdown.appendChild(option);
+            });
+        }
+
+        // 사이코로 픽션 룰 적용
+        function updateSkillValues() {
+            Object.keys(skillValues).forEach(skill => {
+                skillValues[skill] = 12;
+            });
+
+            Object.keys(selectedSkills).forEach(selectedSkill => {
+                const cell = document.querySelector(`td[data-skill="${selectedSkill}"]`);
+                const row = parseInt(cell.getAttribute('data-row'));
+                const col = parseInt(cell.getAttribute('data-col'));
+
+                skillValues[selectedSkill] = 5;
+
+                Object.keys(skillValues).forEach(targetSkill => {
+                    if (targetSkill === selectedSkill) return;
+
+                    const targetCell = document.querySelector(`td[data-skill="${targetSkill}"]`);
+                    const targetRow = parseInt(targetCell.getAttribute('data-row'));
+                    const targetCol = parseInt(targetCell.getAttribute('data-col'));
+
+                    const distance = calculateManhattanDistance(row, col, targetRow, targetCol);
+                    
+                    if (distance > 0) {
+                        const newValue = 5 + distance;
+                        if (newValue < skillValues[targetSkill]) {
+                            skillValues[targetSkill] = newValue;
+                        }
+                    }
+                });
+            });
+
+            updateSkillDisplay();
+            updateAllSkillsDropdown();
+            updateDicebotSkillDropdown();
+        }
+
+        // 맨하탄 거리 계산
+        function calculateManhattanDistance(row1, col1, row2, col2) {
+            const rowDistance = Math.abs(row1 - row2);
+            
+            let colDistance = 0;
+            const minCol = Math.min(col1, col2);
+            const maxCol = Math.max(col1, col2);
+            
+            if (minCol === maxCol) {
+                colDistance = 0;
+            } else {
+                colDistance = (maxCol - minCol) * 2;
+                
+                if (curiosityIndex >= 0) {
+                    for (let i = minCol; i < maxCol; i++) {
+                        if (isGapFilled(i)) {
+                            colDistance -= 1;
+                        }
+                    }
+                }
+            }
+            
+            return rowDistance + colDistance;
+        }
+
+        // 갭이 호기심으로 채워졌는지 확인
+        function isGapFilled(gapIndex) {
+            if (curiosityIndex < 0) return false;
+            
+            if (curiosityIndex > 0 && gapIndex === curiosityIndex - 1) {
+                return true;
+            }
+            
+            if (curiosityIndex < 4 && gapIndex === curiosityIndex) {
+                return true;
+            }
+            
+            return false;
+        }
+
+        // 호기심 선택 이벤트
+        document.getElementById('curiositySelect').addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue) {
+                curiosityIndex = parseInt(selectedValue);
+                updateCuriosityDisplay();
+                updateSkillValues();
+                document.getElementById('currentCuriosity').textContent = this.options[this.selectedIndex].text.split(' ')[1] || '선택안함';
+            } else {
+                curiosityIndex = -1;
+                updateCuriosityDisplay();
+                updateSkillValues();
+                document.getElementById('currentCuriosity').textContent = '선택안함';
+            }
+        });
+
+        // 공포심 선택 이벤트
+        document.getElementById('fearSelect').addEventListener('change', function() {
+            fear = this.value;
+            updateFearDisplay();
+            document.getElementById('currentFear').textContent = fear || '선택안함';
+        });
+
+        function updateCuriosityDisplay() {
+            document.querySelectorAll('.main-table th').forEach(th => {
+                th.classList.remove('curiosity-selected');
+            });
+            document.querySelectorAll('.gap-cell').forEach(gap => {
+                gap.classList.remove('curiosity-filled');
+            });
+            document.querySelectorAll('.main-table td').forEach(td => {
+                td.classList.remove('curiosity-category');
+            });
+
+            if (curiosityIndex >= 0) {
+                const header = document.getElementById(`header-${curiosityIndex}`);
+                if (header) {
+                    header.classList.add('curiosity-selected');
+                }
+
+                document.querySelectorAll(`td[data-col="${curiosityIndex}"]`).forEach(td => {
+                    td.classList.add('curiosity-category');
+                });
+
+                if (curiosityIndex > 0) {
+                    document.querySelectorAll(`td[data-gap="${curiosityIndex-1}"]`).forEach(gap => {
+                        gap.classList.add('curiosity-filled');
+                    });
+                }
+                if (curiosityIndex < 4) {
+                    document.querySelectorAll(`td[data-gap="${curiosityIndex}"]`).forEach(gap => {
+                        gap.classList.add('curiosity-filled');
+                    });
+                }
+            }
+        }
+
+        function updateFearDisplay() {
+            document.querySelectorAll('.main-table td').forEach(td => {
+                td.classList.remove('fear-selected');
+            });
+
+            if (fear) {
+                document.querySelectorAll(`td[data-skill="${fear}"]`).forEach(td => {
+                    td.classList.add('fear-selected');
+                });
+            }
+        }
+
+        // 특기 체크박스 클릭 이벤트
+        document.querySelectorAll('.skill-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const cell = this.closest('td');
+                const category = cell.getAttribute('data-category');
+                const skillName = cell.getAttribute('data-skill');
+                
+                if (cell.classList.contains('fear-selected')) {
+                    this.checked = false;
+                    alert('약점으로 선택된 괴이는 특기로 선택할 수 없습니다.');
+                    return;
+                }
+                
+                if (this.checked) {
+                    const totalSelected = Object.keys(selectedSkills).length;
+                    if (totalSelected >= 6) {
+                        this.checked = false;
+                        alert('특기는 최대 6개까지만 선택할 수 있습니다.');
+                        return;
+                    }
+                    
+                    selectedSkills[skillName] = category;
+                    skillCounts[category]++;
+                } else {
+                    delete selectedSkills[skillName];
+                    skillCounts[category]--;
+                }
+                
+                updateSkillValues();
+                updateSelectedSkills();
+            });
+        });
+
+        // 어빌리티 라디오 버튼 이벤트
+        document.querySelectorAll('.ability-radio').forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.checked) {
+                    const category = this.name.split('-')[1];
+                    const abilityName = this.value;
+                    selectedAbilities[category] = abilityName;
+                    updateSelectedAbilities();
+                    updateDicebotAbilityDropdown();
+                }
+            });
+        });
+
+        // 특기 표시 업데이트
+        function updateSkillDisplay() {
+            const skillCells = document.querySelectorAll('td[data-skill]');
+            skillCells.forEach(cell => {
+                const skill = cell.getAttribute('data-skill');
+                const valueSpan = cell.querySelector('.skill-value');
+                
+                if (valueSpan) {
+                    valueSpan.textContent = skillValues[skill];
+                    
+                    valueSpan.classList.remove('selected', 'influenced');
+                    if (selectedSkills[skill]) {
+                        valueSpan.classList.add('selected');
+                    } else if (skillValues[skill] < 12) {
+                        valueSpan.classList.add('influenced');
+                    }
+                }
+            });
+        }
+
+        function updateSelectedSkills() {
+            const selectedDiv = document.getElementById('selectedSkills');
+            const countSpan = document.getElementById('selectedCount');
+            
+            selectedDiv.innerHTML = '';
+            let totalCount = 0;
+            
+            Object.keys(selectedSkills).forEach(skill => {
+                const skillDiv = document.createElement('div');
+                skillDiv.className = 'skill-item';
+                skillDiv.textContent = `${skill} (${skillValues[skill]})`;
+                selectedDiv.appendChild(skillDiv);
+                totalCount++;
+            });
+            
+            countSpan.textContent = totalCount;
+        }
+
+        function updateSelectedAbilities() {
+            const selectedDiv = document.getElementById('selectedAbilities');
+            const countSpan = document.getElementById('selectedAbilityCount');
+            
+            selectedDiv.innerHTML = '';
+            let totalCount = 0;
+            
+            Object.keys(selectedAbilities).forEach(category => {
+                const abilityDiv = document.createElement('div');
+                abilityDiv.className = 'ability-item';
+                abilityDiv.textContent = `${selectedAbilities[category]} (${category})`;
+                selectedDiv.appendChild(abilityDiv);
+                totalCount++;
+            });
+            
+            countSpan.textContent = totalCount;
+        }
+
+        function updateAllSkillsDropdown() {
+            const dropdown = document.getElementById('targetSkill');
+            const currentValue = dropdown.value;
+            dropdown.innerHTML = '<option value="">특기를 선택하세요</option>';
+            
+            const skillCells = document.querySelectorAll('td[data-skill]');
+            skillCells.forEach(cell => {
+                const skill = cell.getAttribute('data-skill');
+                const option = document.createElement('option');
+                option.value = skill;
+                option.textContent = `${skill} (목표값: ${skillValues[skill]})`;
+                dropdown.appendChild(option);
+            });
+            
+            if (currentValue) {
+                dropdown.value = currentValue;
+            }
+        }
+
+        // 다이스봇 명령어 생성
+        function generateDicebotCommand() {
+            const selectedSkill = document.getElementById('dicebotSkill').value;
+            const selectedAbility = document.getElementById('dicebotAbility').value;
+            const useShikigami = document.getElementById('dicebotShikigami').checked;
+            
+            const characterName = document.getElementById('characterName').value || '은하';
+            
+            let command = '';
+            
+            if (selectedAbility) {
+                // 어빌리티 사용
+                const abilityCategory = Object.keys(selectedAbilities).find(cat => selectedAbilities[cat] === selectedAbility);
+                command = `!r 2d6 "${selectedAbility}" 발동! (${abilityCategory} 계열) - ${characterName}`;
+                
+                // 피해를 주는 어빌리티인지 확인
+                const damageAbilities = ['영혼 채찍', '천상무', '꽃잎 폭풍', '정화의 빛'];
+                if (damageAbilities.includes(selectedAbility)) {
+                    if (selectedAbility === '영혼 채찍') {
+                        command += '\n!r 1d6+1 피해 굴림 - 영혼 채찍';
+                    } else if (selectedAbility === '정화의 빛') {
+                        command += '\n!r 2d6 괴이 피해 / !r 1 일반 피해';
+                    } else if (selectedAbility === '꽃잎 폭풍') {
+                        command += '\n!r 1d6 피해 굴림 (3명까지)';
+                    } else {
+                        command += '\n!r 1d6 피해 굴림';
+                    }
+                }
+                
+                // 회복 어빌리티
+                if (selectedAbility === '치유화') {
+                    command += '\n!r 1d6 생명력 회복';
+                }
+                
+                // 방어 어빌리티
+                if (selectedAbility === '영적 보호막') {
+                    command += '\n!r 1d6 피해 감소';
+                }
+            } else if (selectedSkill) {
+                // 일반 특기 판정
+                const targetValue = skillValues[selectedSkill];
+                let diceFormula = '2d6';
+                let bonusText = '';
+                
+                if (useShikigami) {
+                    diceFormula = '2d6+4';
+                    bonusText = ' - 식신의 힘!';
+                }
+                
+                command = `!r ${diceFormula} "${selectedSkill}" 판정${bonusText} (목표값: ${targetValue}) - ${characterName}`;
+            } else {
+                alert('특기나 어빌리티를 선택해주세요!');
+                return;
+            }
+            
+            document.getElementById('commandText').textContent = command;
+            document.getElementById('generatedCommand').style.display = 'block';
+        }
+
+        // 명령어 복사
+        function copyCommand() {
+            const commandText = document.getElementById('commandText').textContent;
+            navigator.clipboard.writeText(commandText).then(() => {
+                alert('명령어가 클립보드에 복사되었습니다!');
+            });
+        }
+
+        // 빠른 명령어 복사
+        function copyQuickCommand(command) {
+            navigator.clipboard.writeText(command).then(() => {
+                alert('명령어가 클립보드에 복사되었습니다!');
+            });
+        }
+
+        function rollDice() {
+            const targetSkill = document.getElementById('targetSkill').value;
+            const useShikigami = document.getElementById('useShikigami').checked;
+            const resultDiv = document.getElementById('rollResult');
+            
+            if (!targetSkill) {
+                alert('판정할 특기를 선택해주세요.');
+                return;
+            }
+            
+            let dice1 = Math.floor(Math.random() * 6) + 1;
+            let dice2 = Math.floor(Math.random() * 6) + 1;
+            let total = dice1 + dice2;
+            let targetValue = skillValues[targetSkill];
+            let bonus = 0;
+            let resultText = '';
+            
+            if (useShikigami) {
+                bonus += 4;
+                const currentSpiritualPower = parseInt(document.getElementById('spiritualPower').value);
+                if (currentSpiritualPower > 0) {
+                    document.getElementById('spiritualPower').value = currentSpiritualPower - 1;
+                }
+            }
+            
+            if (fear === targetSkill) {
+                bonus -= 2;
+            }
+            
+            const finalTotal = total + bonus;
+            
+            resultText = `${targetSkill} 판정: [${dice1}] + [${dice2}] = ${total}`;
+            if (bonus > 0) resultText += ` + ${bonus}(보너스)`;
+            if (bonus < 0) resultText += ` ${bonus}(페널티)`;
+            resultText += ` = ${finalTotal}`;
+            
+            let success = '';
+            if (dice1 === 1 && dice2 === 1) {
+                success = ' - 💀 펌블 (자동실패)';
+            } else if (dice1 === 6 && dice2 === 6) {
+                success = ' - ✨ 스페셜 (대성공)';
+            } else if (finalTotal >= targetValue) {
+                success = ' - ✅ 성공';
+            } else {
+                success = ' - ❌ 실패';
+            }
+            
+            resultDiv.innerHTML = `
+                <div><strong>${targetSkill}</strong> 판정 (목표값: ${targetValue})</div>
+                <div>${resultText}${success}</div>
+            `;
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSkillValues();
+        });
+    </script>
+</body>
+</html>
